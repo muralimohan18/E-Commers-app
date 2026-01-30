@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Filter, Grid, List, Edit, Trash2, Eye } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,6 +31,11 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  // ✅ Manual page branding
+  useEffect(() => {
+    document.title = 'Products | E-Commerce App';
+  }, []);
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name

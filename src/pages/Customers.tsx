@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Users as UsersIcon } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,8 +6,20 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { customers } from '@/data/mockData';
 
+const formatINR = (amount: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(amount);
+
 const Customers = () => {
   const [searchQuery, setSearchQuery] = useState('');
+
+  // 🇮🇳 Indian page branding
+  useEffect(() => {
+    document.title = 'Customers | E-Commerce India';
+  }, []);
 
   const filteredCustomers = customers.filter(
     (customer) =>
@@ -20,9 +32,9 @@ const Customers = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Customers 👥</h1>
+          <h1 className="text-3xl font-bold text-foreground">Customers 🇮🇳</h1>
           <p className="text-muted-foreground mt-1">
-            View and manage your customer base
+            View and manage your Indian customer base
           </p>
         </div>
 
@@ -71,6 +83,7 @@ const Customers = () => {
                           .join('')}
                       </AvatarFallback>
                     </Avatar>
+
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-lg truncate">
                         {customer.name}
@@ -88,9 +101,10 @@ const Customers = () => {
                       </p>
                       <p className="text-xs text-muted-foreground">Orders</p>
                     </div>
+
                     <div className="bg-mint/20 rounded-xl p-3 text-center">
                       <p className="text-2xl font-bold text-secondary-foreground">
-                        ${customer.totalSpent.toLocaleString()}
+                        {formatINR(customer.totalSpent)}
                       </p>
                       <p className="text-xs text-muted-foreground">Total Spent</p>
                     </div>
@@ -100,7 +114,7 @@ const Customers = () => {
                     <p className="text-sm text-muted-foreground">
                       Customer since{' '}
                       <span className="font-medium text-foreground">
-                        {new Date(customer.joinedDate).toLocaleDateString('en-US', {
+                        {new Date(customer.joinedDate).toLocaleDateString('en-IN', {
                           month: 'short',
                           year: 'numeric',
                         })}
@@ -121,14 +135,16 @@ const Customers = () => {
               <p className="text-sm opacity-90">Total Customers</p>
             </CardContent>
           </Card>
+
           <Card className="border-0 shadow-soft gradient-mint">
             <CardContent className="p-6 text-center text-secondary-foreground">
               <p className="text-4xl font-bold">
-                ${customers.reduce((sum, c) => sum + c.totalSpent, 0).toLocaleString()}
+                {formatINR(customers.reduce((sum, c) => sum + c.totalSpent, 0))}
               </p>
               <p className="text-sm opacity-90">Lifetime Revenue</p>
             </CardContent>
           </Card>
+
           <Card className="border-0 shadow-soft gradient-peach">
             <CardContent className="p-6 text-center text-accent-foreground">
               <p className="text-4xl font-bold">
