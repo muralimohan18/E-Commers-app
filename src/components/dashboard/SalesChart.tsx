@@ -10,6 +10,14 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { salesData } from '@/data/mockData';
 
+// 🇮🇳 INR formatter
+const formatINR = (value: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(value);
+
 export function SalesChart() {
   return (
     <Card className="border-0 shadow-soft hover-lift">
@@ -31,19 +39,25 @@ export function SalesChart() {
                   <stop offset="95%" stopColor="hsl(160, 50%, 75%)" stopOpacity={0} />
                 </linearGradient>
               </defs>
+
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(260, 25%, 90%)" vertical={false} />
+
               <XAxis
                 dataKey="day"
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: 'hsl(240, 10%, 45%)', fontSize: 12 }}
               />
+
+              {/* ✅ INR Y-Axis */}
               <YAxis
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: 'hsl(240, 10%, 45%)', fontSize: 12 }}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => formatINR(value)}
               />
+
+              {/* ✅ INR Tooltip */}
               <Tooltip
                 contentStyle={{
                   backgroundColor: 'hsl(0, 0%, 100%)',
@@ -53,10 +67,11 @@ export function SalesChart() {
                 }}
                 labelStyle={{ color: 'hsl(240, 20%, 20%)', fontWeight: 600 }}
                 formatter={(value: number, name: string) => [
-                  name === 'sales' ? `$${value.toLocaleString()}` : value,
+                  name === 'sales' ? formatINR(value) : value,
                   name === 'sales' ? 'Revenue' : 'Orders',
                 ]}
               />
+
               <Area
                 type="monotone"
                 dataKey="sales"

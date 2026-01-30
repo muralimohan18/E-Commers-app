@@ -25,6 +25,14 @@ const statusEmoji = {
   delivered: '✅',
 };
 
+// 🇮🇳 INR formatter
+const formatINR = (amount: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(amount);
+
 export function RecentOrders() {
   const recentOrders = orders.slice(0, 5);
 
@@ -52,7 +60,10 @@ export function RecentOrders() {
               >
                 <TableCell className="font-medium">{order.id}</TableCell>
                 <TableCell>{order.customer}</TableCell>
-                <TableCell>${order.total.toFixed(2)}</TableCell>
+
+                {/* ✅ INR currency */}
+                <TableCell>{formatINR(order.total)}</TableCell>
+
                 <TableCell>
                   <Badge
                     variant="secondary"

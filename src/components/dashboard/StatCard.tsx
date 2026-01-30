@@ -6,13 +6,21 @@ import { cn } from '@/lib/utils';
 interface StatCardProps {
   title: string;
   value: number;
-  prefix?: string;
-  suffix?: string;
+  prefix?: string;   // kept for compatibility
+  suffix?: string;   // kept for compatibility
   growth?: number;
   icon: LucideIcon;
   gradient: 'lavender' | 'mint' | 'peach' | 'sky';
   delay?: number;
 }
+
+// 🇮🇳 INR formatter
+const formatINR = (val: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(val);
 
 export function StatCard({
   title,
@@ -41,7 +49,7 @@ export function StatCard({
     const steps = 60;
     const increment = value / steps;
     let current = 0;
-    
+
     const timer = setInterval(() => {
       current += increment;
       if (current >= value) {
@@ -62,13 +70,6 @@ export function StatCard({
     sky: 'gradient-sky',
   };
 
-  const formatValue = (val: number) => {
-    if (val >= 1000) {
-      return val.toLocaleString();
-    }
-    return val.toString();
-  };
-
   return (
     <Card
       className={cn(
@@ -80,11 +81,12 @@ export function StatCard({
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
+
+            {/* ✅ INR formatted value */}
             <p className="text-3xl font-bold text-foreground animate-count-up">
-              {prefix}
-              {formatValue(displayValue)}
-              {suffix}
+              {formatINR(displayValue)}
             </p>
+
             {growth !== undefined && (
               <p
                 className={cn(
@@ -98,6 +100,7 @@ export function StatCard({
               </p>
             )}
           </div>
+
           <div
             className={cn(
               'w-12 h-12 rounded-xl flex items-center justify-center',

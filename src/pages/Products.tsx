@@ -156,16 +156,13 @@ const Products = () => {
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <Badge
-                    variant="secondary"
-                    className="mb-2 text-xs rounded-full"
-                  >
+                  <Badge variant="secondary" className="mb-2 text-xs rounded-full">
                     {product.category}
                   </Badge>
                   <h3 className="font-semibold truncate">{product.name}</h3>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-lg font-bold text-primary">
-                      ${product.price.toFixed(2)}
+                      ₹{product.price.toLocaleString('en-IN')}
                     </span>
                     <Badge
                       variant="secondary"
@@ -200,7 +197,9 @@ const Products = () => {
                     <p className="text-sm text-muted-foreground">{product.category}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+                    <p className="font-bold text-primary">
+                      ₹{product.price.toLocaleString('en-IN')}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {product.stock} in stock
                     </p>
